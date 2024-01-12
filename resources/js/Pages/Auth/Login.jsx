@@ -5,7 +5,7 @@ import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
-import { Head, Link, useForm } from '@inertiajs/react';
+import { Head, Link, useForm, usePage } from '@inertiajs/react';
 
 export default function Login({ status, canResetPassword }) {
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -20,10 +20,35 @@ export default function Login({ status, canResetPassword }) {
         };
     }, []);
 
-    const submit = (e) => {
+    // const submit = (e) => {
+    //     e.preventDefault();
+
+    //     post(route('login'));
+    // };
+    const submit = async (e) => {
         e.preventDefault();
 
-        post(route('login'));
+        const response = await post(route('login'), {
+            data: {
+                email: data.email,
+                password: data.password,
+            },
+            
+        });
+        
+        alert("Successfully run");
+        
+        if (response.success) {
+            localStorage.setItem('token', response.token);
+
+            alert('token');
+
+            const { push } = usePage();
+
+            push(route('dashboard'));
+        } else {
+            console.error('Login failed:', response.error);
+        }
     };
 
     return (

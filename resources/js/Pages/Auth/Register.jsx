@@ -20,11 +20,30 @@ export default function Register() {
         };
     }, []);
 
-    const submit = (e) => {
-        e.preventDefault();
+    // const submit = (e) => {
+    //     e.preventDefault();
 
-        post(route('register'));
+    //     post(route('register'));
+    // };
+    const submit = async (e) => {
+        e.preventDefault();
+    
+        try {
+            const response = await post(route('api/register'));
+    
+            if (response.ok) {
+                const { token } = response.data;
+    
+                localStorage.setItem('token', token);
+    
+                visit(route('dashboard'));
+            }
+        } catch (error) {
+            console.error('Registration error:', error);
+        }
     };
+    
+
 
     return (
         <GuestLayout>

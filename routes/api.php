@@ -2,7 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\UserApiController;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,24 +18,25 @@ use App\Http\Controllers\Api\UserApiController;
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //     return $request->user();
 // });
-Route::post('/register', [UserApiController::class, 'register']);
-Route::post('/login', [UserApiController::class, 'login']);
-
-Route::get('/users', [UserApiController::class, 'index']);
-
-Route::middleware('auth:api')->group(function () {
-    Route::put('/api/user/update-status/{user}', [UserApiController::class, 'updateStatus']);
-});
 
 // Route::get('/api/user', function (Request $request) {
 //     return $request->user();
 // });
 
+Route::get('/user/{id}', [UserController::class, 'getUser']);
 
-// Route::controller(UserController::class)->group(function ()  {
-//     Route::post('/login','/register');
-// });
+Route::get('/user', [UserController::class, 'index']);
 
-// Route::controller(UserController::class)->group(function ()  {
-//     Route::get('/login','/register');
+Route::middleware('auth:api')->group(function () {
+    Route::get('/user/userdetails', [UserController::class, 'userdetails']);
+});
+
+Route::post('/register', [UserController::class, 'register']);
+Route::post('/login', [UserController::class, 'login']);
+
+
+
+
+// Route::middleware('auth:api')->group(function () {
+    
 // });
